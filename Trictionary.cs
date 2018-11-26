@@ -27,43 +27,41 @@ namespace Project
 
     public class SUTrictionaryBase<Key, Value, Control>
     {
-        public int Count { get { return DataTrack.Count(); } }
-        public List<Key> Keys { get { return DataTrack.Keys.ToList(); } }
         public IDictionary<Key, KeyValueTriple<Key, Value, Control>> DataTrack = new Dictionary<Key, KeyValueTriple<Key, Value, Control>>();
+
+        internal void IsSorted(bool IS)
+        {
+            if (IS) DataTrack = new SortedDictionary<Key, KeyValueTriple<Key, Value, Control>>();
+            else DataTrack = new Dictionary<Key, KeyValueTriple<Key, Value, Control>>();
+        }
+
+        public int Count { get { return DataTrack.Count(); } }
+
+        public List<Key> Keys { get { return DataTrack.Keys.ToList(); } }
+        public List<Value> Values { get { return DataTrack.Values.Select(c => c.Value).ToList(); } }
+        public List<Control> Controls { get { return ControlDictionary.Values.ToList(); } }
+
+        private Dictionary<U, V> Zip<U, V>(List<U> ULst, List<V> VLst)
+        {
+            return ULst.Zip(VLst, (k, v) => new { k, v }).ToDictionary(x => x.k, x => x.v);
+        }
+
+        public Dictionary<Key, Value> ValueDictionary { get { return Zip(Keys, Values); } }
+
+        public Dictionary<Key, Control> ControlDictionary { get { return Zip(Keys, Controls); } }
 
         #region Dictionary
 
-        public List<Value> Values { get { return ValueDictionary.Values.ToList(); } }
-        public Dictionary<Key, Value> ValueDictionary = new Dictionary<Key, Value>();
-
-        public List<Control> Controls { get { return ControlDictionary.Values.ToList(); } }
-        public Dictionary<Key, Control> ControlDictionary = new Dictionary<Key, Control>();
-
         public void Add(Key key, Value value, Control control) => Add(new KeyValueTriple<Key, Value, Control>(key, value, control));
 
-        public void Add(KeyValueTriple<Key, Value, Control> KVT)
-        {
-            DataTrack.Add(KVT.Key, KVT);
-            ValueDictionary.Add(KVT.Key, KVT.Value);
-            ControlDictionary.Add(KVT.Key, KVT.Control);
-        }
+        public void Add(KeyValueTriple<Key, Value, Control> KVT) => DataTrack.Add(KVT.Key, KVT);
 
-        public void Remove(Key key)
-        {
-            DataTrack.Remove(key);
-            ValueDictionary.Remove(key);
-            ControlDictionary.Remove(key);
-        }
+        public void Remove(Key key) => DataTrack.Remove(key);
 
         public KeyValueTriple<Key, Value, Control> this[Key key]
         {
             get { return DataTrack[key]; }
-            set
-            {
-                DataTrack[key] = value;
-                ValueDictionary[key] = value.Value;
-                ControlDictionary[key] = value.Control;
-            }
+            set { DataTrack[key] = value; }
         }
 
         #endregion Dictionary
@@ -86,12 +84,6 @@ namespace Project
                 pointer++;
             }
             return null;
-        }
-
-        internal void IsSorted(bool IS)
-        {
-            if (IS) DataTrack = new SortedDictionary<Key, KeyValueTriple<Key, Value, Control>>();
-            else DataTrack = new Dictionary<Key, KeyValueTriple<Key, Value, Control>>();
         }
     }
 
