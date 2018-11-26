@@ -1,11 +1,7 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections;
 
-namespace AniLyst_5._0
+namespace Project
 {
     public class Trictionary<Key, Value, Control>
     {
