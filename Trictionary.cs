@@ -25,7 +25,7 @@ namespace Project
         }
     }
 
-    public class SUTrictionaryBase<Key, Value, Control>
+    public class SUTrictionaryBase<Key, Value, Control> : IEnumerable<KeyValueTriple<Key, Value, Control>>
     {
         public IDictionary<Key, KeyValueTriple<Key, Value, Control>> DataTrack = new Dictionary<Key, KeyValueTriple<Key, Value, Control>>();
 
@@ -85,6 +85,13 @@ namespace Project
             }
             return null;
         }
+        
+        
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+        
     }
 
     public partial class KeyValueTriple<key, value, control>
