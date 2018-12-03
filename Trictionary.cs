@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Project
 {
-    public class Trictionary<Key, Value, Control> : SUTrictionaryBase<Key, Value, Control>
+   public class Trictionary<Key, Value, Control> : SUTrictionaryBase<Key, Value, Control>
     {
         public Trictionary() => IsSorted(false);
 
@@ -25,7 +25,7 @@ namespace Project
         }
     }
 
-    public class SUTrictionaryBase<Key, Value, Control> : IEnumerable<KeyValueTriple<Key, Value, Control>>
+    public class SUTrictionaryBase<Key, Value, Control>
     {
         public IDictionary<Key, KeyValueTriple<Key, Value, Control>> DataTrack = new Dictionary<Key, KeyValueTriple<Key, Value, Control>>();
 
@@ -85,13 +85,11 @@ namespace Project
             }
             return null;
         }
-        
-        
-        IEnumerator IEnumerable.GetEnumerator()
+
+        public int IndexOf(Key _Key)
         {
-            return GetEnumerator();
+            return Keys.IndexOf(_Key);
         }
-        
     }
 
     public partial class KeyValueTriple<key, value, control>
