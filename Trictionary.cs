@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Project
 {
-   public class Trictionary<Key, Value, Control> : SUTrictionaryBase<Key, Value, Control>
+  public class Trictionary<Key, Value, Control> : SUTrictionaryBase<Key, Value, Control>
     {
         public Trictionary() => IsSorted(false);
 
@@ -39,7 +39,7 @@ namespace Project
 
         public List<Key> Keys { get { return DataTrack.Keys.ToList(); } }
         public List<Value> Values { get { return DataTrack.Values.Select(c => c.Value).ToList(); } }
-        public List<Control> Controls { get { return ControlDictionary.Values.ToList(); } }
+        public List<Control> Controls { get { return DataTrack.Values.Select(c => c.Control).ToList(); } }
 
         private Dictionary<U, V> Zip<U, V>(List<U> ULst, List<V> VLst)
         {
